@@ -4,7 +4,7 @@ import netifaces as ni
 # from http.server import BaseHTTPRequestHandler
 import socketserver
 from http import server
-from urllib.parse import parse_qs
+# from urllib.parse import parse_qs
 from motor import StepperMotor
 import logging
 import camera
@@ -14,77 +14,6 @@ motor = StepperMotor()
 cam = camera.StreamingCamera()
 IP = ni.ifaddresses('wlan0')[ni.AF_INET][0]['addr']
 PORT = 8765
-
-def Get_HTML_Home():
-	output = "<!DOCTYPE HTML><html>"
-	output += "<head>"
-	output += "<title>Smart Pantry</title>"
-	output += "<style>"
-	output += "html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}"
-	output += "body{margin-top: 50px;} h1 {color: #444444;margin: 50px auto 30px;} h3 {color: #444444;margin-bottom: 50px;}"
-	output += ".button { border: none; color: gray; height: 50px; width: 100px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 12px;}"
-	output += "p {font-size: 14px;color: #888;margin-bottom: 10px;}"
-	output += ".button:hover { background-color: #4CAF50; color: white;}"
-	output += ".button:active {background-color: #3e8e41; box-shadow: 0 5px #666; transform: translateY(4px);}"
-	output += "</style>"
-	output += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>"
-	output += "</head>"
-	output += "<body>"
-	output += "<h1>Smart Pantry</h1>"
-
-	output += '<button id=\"UP\" class=\"button button1\" name="UP" value="UP">UP</button>'
-	output += '<script>'
-	output += '''var button1 = document.getElementById("UP");
-	var intervalId1;
-	var xhr1;
-
-	button1.addEventListener("mousedown", function() {
-	intervalId1 = setInterval(sendRequest1, 250); // val of 500 sends a request every half-second
-	});
-
-	button1.addEventListener("mouseup", function() {
-	clearInterval(intervalId1);
-	xhr1.abort(); // aborts any ongoing requests
-	});
-
-	function sendRequest1() {
-	xhr1 = new XMLHttpRequest();
-	xhr1.open("POST", "http://''' + IP + ''':''' + str(PORT) + '''/home/up", true);
-	xhr1.setRequestHeader('Content-Type', 'application/json');
-	xhr1.send();
-	}'''
-	output += '</script>'
-	output += '<br>'
-
-	output += '<button id=\"DOWN\" class=\"button button2\" name="DOWN" value="DOWN">DOWN</button>'
-	output += '<script>'
-	output += '''var button2 = document.getElementById("DOWN");
-	var intervalId2;
-	var xhr2;
-
-	button2.addEventListener("mousedown", function() {
-	intervalId2 = setInterval(sendRequest2, 250); // val of 500 sends a request every half-second
-	});
-
-	button2.addEventListener("mouseup", function() {
-	clearInterval(intervalId2);
-	xhr2.abort(); // aborts any ongoing requests
-	});
-
-	function sendRequest2() {
-	xhr2 = new XMLHttpRequest();
-	xhr2.open("POST", "http://''' + IP + ''':''' + str(PORT) + '''/home/down", true);
-	xhr2.setRequestHeader('Content-Type', 'application/json');
-	xhr2.send();
-	}'''
-	output += '</script>'
-
-	output += '<h1>Pantry Live Stream</h1>'
-	output += '<img src="stream.mjpg" width="640" height="480" />'
-
-	output += "</body>"
-	output += "</html>"
-	return output
 
 class requestHandler(server.BaseHTTPRequestHandler):
 	def do_GET(self):
