@@ -286,7 +286,7 @@ def Get_html(IP, PORT):
               
               function sendRequest1() {
                 xhr1 = new XMLHttpRequest();
-                xhr1.open("POST", "http://''' + IP + ''':''' + str(PORT) + '''/home/down", true);
+                xhr1.open("POST", "http://''' + IP + ''':''' + str(PORT) + '''/home/up", true);
                 xhr1.setRequestHeader('Content-Type', 'application/json');
                 xhr1.send();
               }
