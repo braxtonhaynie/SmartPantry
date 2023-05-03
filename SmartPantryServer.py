@@ -8,6 +8,7 @@ from urllib.parse import parse_qs
 from motor import StepperMotor
 import logging
 import camera
+from HTML import Get_html
 
 motor = StepperMotor()
 cam = camera.StreamingCamera()
@@ -91,7 +92,8 @@ class requestHandler(server.BaseHTTPRequestHandler):
 			self.send_response(200)
 			self.send_header("content-type", "text/html")
 			self.end_headers()
-			output = Get_HTML_Home()
+			# output = Get_HTML_Home()
+			output = Get_html(IP, PORT)
 			self.wfile.write(output.encode())
 		elif self.path == '/stream.mjpg':
 			self.send_response(200)

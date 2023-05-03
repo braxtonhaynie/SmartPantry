@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Smart Pantry</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+    <div class="header">
+        <h1>Smart Pantry</h1>
+    </div>
+
+    <div class="container">
+      <div class="d-flex">
+
+        <div class="leftpane">
+          <br>
+
+          <div class="live-feed-window">
+            <h2>Pantry Live Stream</h2>
+            
+            <div class="live-feed">
+              <img src="stream.mjpg" width="640" height="480"/>
+            </div>
+
+            <div class="button-panel">
+              <br>
+              <br>
+              <br>
+
+              <button id="UP" class="button button1" name="UP" value="UP">UP</button>
+              <script>
+                var button1 = document.getElementById("UP");
+                var intervalId1;
+                var xhr1;
+                
+                button1.addEventListener("mousedown", function() {
+                  intervalId1 = setInterval(sendRequest1, 250); // val of 500 sends a request every half-second
+                });
+                
+                button1.addEventListener("mouseup", function() {
+                  clearInterval(intervalId1);
+                  xhr1.abort(); // aborts any ongoing requests
+                });
+                
+                function sendRequest1() {
+                  xhr1 = new XMLHttpRequest();
+                  xhr1.open("POST", "http://10.131.8.29:8765/home/up", true);
+                  xhr1.setRequestHeader('Content-Type', 'application/json');
+                  xhr1.send();
+                }
+              </script>
+
+              <br>
+              <br>
+              <br>
+
+              <button id="DOWN" class="button button2" name="DOWN" value="DOWN">DOWN</button>
+              <script>
+                var button2 = document.getElementById("DOWN");
+                var intervalId2;
+                var xhr2;
+                
+                button2.addEventListener("mousedown", function() {
+                  intervalId2 = setInterval(sendRequest2, 250); // val of 500 sends a request every half-second
+                });
+                
+                button2.addEventListener("mouseup", function() {
+                  clearInterval(intervalId2);
+                  xhr2.abort(); // aborts any ongoing requests
+                });
+                
+                function sendRequest2() {
+                  xhr2 = new XMLHttpRequest();
+                  xhr2.open("POST", "http://10.131.8.29:8765/home/down", true);
+                  xhr2.setRequestHeader('Content-Type', 'application/json');
+                  xhr2.send();
+                }
+              </script>
+            </div>
+          </div>
+        </div>
+
+        <div class="rightpane">
+          <br>
+
+          <div class="grocery-list">
+            <h2>Grocery List</h2>
+            
+            <input type="text" id="myInput" placeholder="Item">
+            <span onclick="newElement()" class="addBtn">Add</span>
+            
+            <div style="padding-top: 75px;"> 
+              <ul id="myUL">
+                <li>Beans</li>
+                <li class="checked">Bananas</li>
+                <li>OJ</li>
+                <li>Carrots</li>
+                <li>Broccoli</li>
+              </ul>
+            </div>
+          </div>
+          
+          <script>
+            // Create a "close" button and append it to each list item
+            var myNodelist = document.getElementsByTagName("LI");
+            var i;
+            for (i = 0; i < myNodelist.length; i++) {
+              var span = document.createElement("SPAN");
+              var txt = document.createTextNode("\u00D7");
+              span.className = "close";
+              span.appendChild(txt);
+              myNodelist[i].appendChild(span);
+            }
+            
+            // Click on a close button to hide the current list item
+            var close = document.getElementsByClassName("close");
+            var i;
+            for (i = 0; i < close.length; i++) {
+              close[i].onclick = function() {
+                var div = this.parentElement;
+                div.style.display = "none";
+              }
+            }
+            
+            // Add a "checked" symbol when clicking on a list item
+            var list = document.querySelector('ul');
+            list.addEventListener('click', function(ev) {
+              if (ev.target.tagName === 'LI') {
+                ev.target.classList.toggle('checked');
+              }
+            }, false);
+            
+            // Create a new list item when clicking on the "Add" button
+            function newElement() {
+              var li = document.createElement("li");
+              var inputValue = document.getElementById("myInput").value;
+              var t = document.createTextNode(inputValue);
+              li.appendChild(t);
+              if (inputValue === '') {
+                alert("You must write something!");
+              } else {
+                document.getElementById("myUL").appendChild(li);
+              }
+              document.getElementById("myInput").value = "";
+            
+              var span = document.createElement("SPAN");
+              var txt = document.createTextNode("\u00D7");
+              span.className = "close";
+              span.appendChild(txt);
+              li.appendChild(span);
+            
+              for (i = 0; i < close.length; i++) {
+                close[i].onclick = function() {
+                  var div = this.parentElement;
+                  div.style.display = "none";
+                }
+              }
+            }
+          </script>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>
