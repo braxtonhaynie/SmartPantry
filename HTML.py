@@ -29,27 +29,36 @@ def Get_html(IP, PORT):
       .container {
           width: 100%;
           height: 100vh;
-          display: flex;
+          display: table;
       }
 
       .leftpane {
           width: 65%;
           height: 100%;
-          display: inline-block;
+          float: left;
       }
 
       .rightpane {
-          float: auto;
+          float: left;
           width: 35%;
           height: 100%;
       }
 
+      @media only screen and (max-width: 1000px) {
+          .leftpane, .rightpane {
+            width: 100%;
+            height: 75%;
+          }
+      }
+
       h1 {
           color: #444444;
+          font-size: 120%;
       }
 
       h2 {
           color: #d4d4d4;
+          font-size: 1.5em;
       }
 
       h3 {
@@ -60,30 +69,40 @@ def Get_html(IP, PORT):
       p {
           font-size: 14px;
           color: #888;
-          /* margin-bottom: 10px; */
       }
 
       img {
           background-color: #c66b0a;
-          width : 98%;
+          width : 95%;
           height: auto;
           display: block;
           margin: auto;
+          -webkit-transform: rotate(180deg);
+          -moz-transform: rotate(180deg);
+          -ms-transform: rotate(180deg);
+          -o-transform: rotate(180deg);
+          transform: rotate(180deg);
       }
 
       .button {
-          border: none; 
-          color: gray; 
-          height: 15%; 
-          width: 90%;
-          text-align: center; 
-          text-decoration: none;
-          align-items: center;
-          font-size: 16px;
-          cursor: pointer;
-          border-radius: 20px;
-          margin-bottom: 10px;
-          display: block;
+        border: none; 
+        color: gray; 
+        height: 15%; 
+        width: 85%;
+        text-align: center; 
+        text-decoration: none;
+        align-items: center;
+        font-size: 1em;
+        cursor: pointer;
+        border-radius: 20px;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      .button:disabled { 
+          color: white;
+          pointer-events: none;
+          opacity: 0.3;
       }
 
       .button:hover { 
@@ -93,8 +112,36 @@ def Get_html(IP, PORT):
 
       .button:active {
           background-color: #c66b0a; 
-          box-shadow: 0 5px #666; 
+          box-shadow: 0 5px #c66b0a; 
           transform: translateY(4px);
+      }
+
+      .selected {
+          background-color: #FF8200; 
+          box-shadow: 0 5px #c66b0a; 
+          transform: translateY(4px);
+      }
+
+      .running {
+          background-color: #f4776e;
+          color: white;
+          
+      }
+
+      .running:hover {
+          background-color: #f44336;
+          color: white;
+          
+      }
+
+      .not-running {
+          background-color: #5dd32f;
+          color: white;
+      }
+
+      .not-running:hover {
+          background-color: #6cf436;
+          color: white;
       }
 
       .grocery-list {
@@ -107,28 +154,29 @@ def Get_html(IP, PORT):
       }
 
       .live-feed-window {
-          margin: auto;
+          margin: 0 auto;
           background-color: #58595B;
           text-align: center;
           border-radius: 20px;
           height: 75%;
-          width: 80%;
+          width: 95%;
       }
 
       .live-feed {
           width: 75%;
-          float: left;
           height: 90%;
-          display:flex;
+          float: left;
+          display: flex;
       }
 
       .button-panel {
           width: 25%;
+          height: 90%;
+          float: left;
           display: flex;
           justify-content: center;
           align-items: center;
           flex-direction: column;
-          height: 90%;
       }
 
       /* Include the padding and border in an element's total width and height */
@@ -139,11 +187,10 @@ def Get_html(IP, PORT):
       /* Remove margins and padding from the list */
       ul {
           margin: auto;
-          height: 60%;
           width: 60%;
+          max-height: 35vh;
           padding: 10px;
           border-radius: 20px;
-          overflow: hidden;
           overflow-y: scroll;
       }
 
@@ -156,7 +203,7 @@ def Get_html(IP, PORT):
           padding: 12px 8px 10px 40px;
           list-style-type: none;
           background: #eee;
-          font-size: 18px;
+          font-size: 1em;
           transition: 0.2s;
           text-align: left;
 
@@ -228,7 +275,7 @@ def Get_html(IP, PORT):
           width: 75%;
           padding: 10px;
           float: left;
-          font-size: 16px;
+          font-size: 1em;
         }
 
       /* Style the "Add" button */
@@ -239,7 +286,7 @@ def Get_html(IP, PORT):
           color: #555;
           float: left;
           text-align: center;
-          font-size: 16px;
+          font-size: 1em;
           cursor: pointer;
           transition: 0.3s;
           border-radius: 0;
@@ -274,22 +321,38 @@ def Get_html(IP, PORT):
               var button1 = document.getElementById("UP");
               var intervalId1;
               var xhr1;
+              var selectedOption = null;
               
-              button1.addEventListener("mousedown", function() {
+              function start_Up() {
                 intervalId1 = setInterval(sendRequest1, 250); // val of 500 sends a request every half-second
-              });
+              }
               
-              button1.addEventListener("mouseup", function() {
+              function stop_Up() {
                 clearInterval(intervalId1);
                 xhr1.abort(); // aborts any ongoing requests
-              });
-              
+              }
+
               function sendRequest1() {
                 xhr1 = new XMLHttpRequest();
                 xhr1.open("POST", "http://''' + IP + ''':''' + str(PORT) + '''/home/up", true);
                 xhr1.setRequestHeader('Content-Type', 'application/json');
                 xhr1.send();
               }
+
+              function handleOptionSelection(event) {
+                if (selectedOption !== null && selectedOption === event.target && isRunning !== true) {
+                  selectedOption.classList.remove("selected");
+                  selectedOption = null;
+                } else {
+                  if (selectedOption !== null) {
+                    selectedOption.classList.remove("selected");
+                  }
+                  selectedOption = event.target;
+                  selectedOption.classList.add("selected");
+                  console.log(event.target.id)
+                }
+              }
+              button1.addEventListener("click", handleOptionSelection);
             </script>
 
             <button id="DOWN" class="button button2" name="DOWN" value="DOWN">DOWN</button>
@@ -298,21 +361,82 @@ def Get_html(IP, PORT):
               var intervalId2;
               var xhr2;
               
-              button2.addEventListener("mousedown", function() {
+              function start_Down() {
                 intervalId2 = setInterval(sendRequest2, 250); // val of 500 sends a request every half-second
-              });
+              }
               
-              button2.addEventListener("mouseup", function() {
+              function stop_Down() {
                 clearInterval(intervalId2);
                 xhr2.abort(); // aborts any ongoing requests
-              });
-              
+              }
+
               function sendRequest2() {
                 xhr2 = new XMLHttpRequest();
                 xhr2.open("POST", "http://''' + IP + ''':''' + str(PORT) + '''/home/down", true);
                 xhr2.setRequestHeader('Content-Type', 'application/json');
                 xhr2.send();
               }
+
+			        button2.addEventListener("click", handleOptionSelection);
+            </script>
+            
+            <button id="ST-SP" class="button button3 not-running" name="ST-SP" value="ST-SP">START</button>
+            <script>
+              var button3 = document.getElementById("ST-SP");
+              var isRunning = false;
+
+              button3.addEventListener("click", () => {
+                if (selectedOption === null) {
+                  console.log("select up or down")
+                  button3.classList.remove("running");
+                  button3.classList.add("not-running");
+                  document.getElementById("DOWN").disabled = false;
+                  document.getElementById("UP").disabled = false;
+                  button3.textContent = "START";
+                }
+                else{
+                  if (!isRunning) {
+                    button3.classList.add("running");
+                    button3.classList.remove("not-running");
+                    button3.textContent = "STOP";
+                    isRunning = true;
+                    if (selectedOption.id === "UP" ) { // start up
+                      console.log("UP starting");
+                      document.getElementById("DOWN").disabled = true;
+                      document.getElementById("UP").disabled = false;
+                      start_Up();
+                    }
+                    else { // start down
+                      console.log("Down starting");
+                      document.getElementById("DOWN").disabled = false;
+                      document.getElementById("UP").disabled = true;
+                      start_Down();
+                    }
+                  }
+                  else {
+                    button3.classList.add("not-running");
+                    button3.classList.remove("running");
+                    button3.textContent = "START";
+                    document.getElementById("DOWN").disabled = false;
+                    document.getElementById("UP").disabled = false;
+                    isRunning = false;
+                    if (selectedOption.id === "UP" ) { // stop up
+                      console.log("UP stopping");
+                      stop_Up();
+                    }
+                    else { // stop down
+                      console.log("Down stopping");
+                      stop_Down();
+                    }
+                    if (selectedOption !== null) {
+                      selectedOption.classList.remove("selected");
+                      selectedOption = null;
+                    }
+                  }
+                }
+                
+                console.log(isRunning);
+              });
             </script>
           </div>
         </div> 

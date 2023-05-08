@@ -21,33 +21,36 @@ body{
 .container {
     width: 100%;
     height: 100vh;
-    display: flex;
+    display: table;
 }
 
 .leftpane {
     width: 65%;
     height: 100%;
-    display: inline-block;
+    float: left;
 }
 
 .rightpane {
-    float: auto;
+    float: left;
     width: 35%;
     height: 100%;
 }
 
-/* .d-flex {
-    display: flex;
-    height: 100%;
-    width:  100%;
-} */
+@media only screen and (max-width: 500px) {
+    .leftpane, .rightpane {
+      width: 100%;
+      height: 75%;
+    }
+}
 
 h1 {
     color: #444444;
+    font-size: 2em;
 }
 
 h2 {
     color: #d4d4d4;
+    font-size: 1.5em;
 }
 
 h3 {
@@ -58,12 +61,11 @@ h3 {
 p {
     font-size: 14px;
     color: #888;
-    /* margin-bottom: 10px; */
 }
 
 img {
     background-color: #c66b0a;
-    width : 98%;
+    width : 95%;
     height: auto;
     display: block;
     margin: auto;
@@ -73,15 +75,21 @@ img {
     border: none; 
     color: gray; 
     height: 15%; 
-    width: 90%;
+    width: 85%;
     text-align: center; 
     text-decoration: none;
     align-items: center;
-    font-size: 16px;
+    font-size: 1em;
     cursor: pointer;
     border-radius: 20px;
     margin-bottom: 10px;
     display: block;
+}
+
+.button:disabled { 
+    color: white;
+    pointer-events: none;
+    opacity: 0.3;
 }
 
 .button:hover { 
@@ -91,8 +99,36 @@ img {
 
 .button:active {
     background-color: #c66b0a; 
-    box-shadow: 0 5px #666; 
+    box-shadow: 0 5px #c66b0a; 
     transform: translateY(4px);
+}
+
+.selected {
+    background-color: #FF8200; 
+    box-shadow: 0 5px #c66b0a; 
+    transform: translateY(4px);
+}
+
+.running {
+    background-color: #f4776e;
+    color: white;
+    
+}
+
+.running:hover {
+    background-color: #f44336;
+    color: white;
+    
+}
+
+.not-running {
+    background-color: #5dd32f;
+    color: white;
+}
+
+.not-running:hover {
+    background-color: #6cf436;
+    color: white;
 }
 
 .grocery-list {
@@ -105,28 +141,29 @@ img {
 }
 
 .live-feed-window {
-    margin: auto;
+    margin: 0 auto;
     background-color: #58595B;
     text-align: center;
     border-radius: 20px;
     height: 75%;
-    width: 80%;
+    width: 95%;
 }
 
 .live-feed {
     width: 75%;
-    float: left;
     height: 90%;
-    display:flex;
+    float: left;
+    display: flex;
 }
 
 .button-panel {
     width: 25%;
+    height: 90%;
+    float: left;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 90%;
 }
 
 /* Include the padding and border in an element's total width and height */
@@ -137,11 +174,10 @@ img {
 /* Remove margins and padding from the list */
 ul {
     margin: auto;
-    height: 60%;
     width: 60%;
+    max-height: 50vh;
     padding: 10px;
     border-radius: 20px;
-    overflow: hidden;
     overflow-y: scroll;
 }
 
@@ -154,7 +190,7 @@ ul li {
     padding: 12px 8px 10px 40px;
     list-style-type: none;
     background: #eee;
-    font-size: 18px;
+    font-size: 1em;
     transition: 0.2s;
     text-align: left;
 
@@ -226,7 +262,7 @@ input {
     width: 75%;
     padding: 10px;
     float: left;
-    font-size: 16px;
+    font-size: 1em;
   }
 
 /* Style the "Add" button */
@@ -237,7 +273,7 @@ input {
     color: #555;
     float: left;
     text-align: center;
-    font-size: 16px;
+    font-size: 1em;
     cursor: pointer;
     transition: 0.3s;
     border-radius: 0;

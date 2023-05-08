@@ -53,9 +53,9 @@ class StepperMotor():
 
     def DriveMotors(self, rotation=1, direction='down'):
         if direction == 'down':
-            motor_pins = [self.in1, self.in2, self.in3, self.in4]
-        elif direction == 'up':
             motor_pins = [self.in4, self.in3, self.in2, self.in1]
+        elif direction == 'up':
+            motor_pins = [self.in1, self.in2, self.in3, self.in4]
         else:
             return
         
