@@ -13,6 +13,7 @@ from HTML import Get_html
 motor = StepperMotor()
 cam = camera.StreamingCamera()
 IP = ni.ifaddresses('wlan0')[ni.AF_INET][0]['addr']
+#IP = '0.0.0.0'
 PORT = 8765
 
 class requestHandler(server.BaseHTTPRequestHandler):
@@ -68,7 +69,7 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
 
-
+servo_location = None
 def main():
 	try:
 		server_address = (IP, PORT)
@@ -78,6 +79,7 @@ def main():
 	except KeyboardInterrupt:
 		cam.picam2.stop_recording()
 		motor.cleanup()
+		
 
 if __name__ == "__main__":
 	main()
