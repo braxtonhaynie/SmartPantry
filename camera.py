@@ -1,4 +1,4 @@
-# from below
+# Modified from below
 # https://github.com/raspberrypi/picamera2/blob/main/examples/mjpeg_server.py
 import io
 import logging
