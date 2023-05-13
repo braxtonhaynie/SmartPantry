@@ -1,10 +1,8 @@
 import time
 import cgi
 import netifaces as ni
-# from http.server import BaseHTTPRequestHandler
 import socketserver
 from http import server
-# from urllib.parse import parse_qs
 from motor import StepperMotor
 import logging
 import camera
@@ -13,7 +11,6 @@ from HTML import Get_html
 motor = StepperMotor()
 cam = camera.StreamingCamera()
 IP = ni.ifaddresses('wlan0')[ni.AF_INET][0]['addr']
-#IP = '0.0.0.0'
 PORT = 8765
 
 class requestHandler(server.BaseHTTPRequestHandler):
